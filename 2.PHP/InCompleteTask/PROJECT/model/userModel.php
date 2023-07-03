@@ -47,4 +47,8 @@ class userModel extends connection {
         $deleteCount = $this->dbConnect->query("SELECT count(id) from tasks where project_id = '$id' and delete_at is not null");
         return $deleteCount->fetch(PDO::FETCH_NUM);
     }
+
+    public function insertProImg($imgs){
+
+    }
 }

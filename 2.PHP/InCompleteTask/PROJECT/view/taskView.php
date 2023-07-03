@@ -27,7 +27,7 @@
                     <button type="submit" value="<?php echo $value->id ?>" name="id">Delete</button>
                 </form>
                 <form action="/" method="post">
-                    <button type="submit" class="btn btn-success">Success</button>
+                    <button type="submit" class="btn btn-success">Home</button>
                 </form>
             </div>
         </div>

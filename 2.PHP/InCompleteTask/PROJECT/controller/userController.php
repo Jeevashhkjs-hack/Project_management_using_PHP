@@ -9,11 +9,22 @@ class userController{
         $this->modelDb = new userModel();
     }
 
-    public function insertProject($getProData){
+    public function insertProject($getProData,$img){
         if($getProData){
             $this->modelDb->insertProject($getProData['projectName']);
+                $count = count($img['name']);
+                $path = 'view/UserImages/';
+
+                for($i=0;$i<$count;$i++){
+                    $destinatin = $path.$img['name'][$i];
+                    $tmpFle = $img['tmp_name'][$i];
+                    move_uploaded_file($tmpFle,$destinatin);
+                    $this->modelDb->insertProImg($destinatin);
+                }
+
             unset($_SESSION['projectPage']);
             $projects = $this->modelDb->getAllProjects();
+            header('location: /');
         }else{
             $_SESSION['projectPage'] = 'open';
         }
@@ -42,11 +53,15 @@ class userController{
             $taskName = $data['taskName'];
             $taskDes = $data['taskDes'];
 
+            $cnt = count($img['name']);
             $path = 'view/UserImages/';
-            $destinatin = $path.$img['name'];
 
-            move_uploaded_file($img['tmp_name'],$destinatin);
-            $this->modelDb->insertTask($taskName,$taskDes,$destinatin,$_SESSION['projectId']);
+            for($i=0;$i<$cnt;$i++){
+                $destinatin = $path.$img['name'][$i];
+                $tmpFle = $img['tmp_name'][$i];
+                move_uploaded_file($tmpFle,$destinatin);
+                $this->modelDb->insertTask($taskName,$taskDes,$destinatin,$_SESSION['projectId']);
+            }
             header('location:/');
         }
         else{
@@ -56,14 +71,19 @@ class userController{
     public function undeletedTask(){
         $projects = $this->modelDb->getAllProjects();
         $datas = $this->modelDb->undeleted($_SESSION['projectId']);
+        $undeleteCn = $this->modelDb->count($_SESSION['projectId']);
+        $deleCnt = $this->modelDb->deletedCount($_SESSION['projectId']);
         require 'view/initialPage.php';
     }
     public function deletedTask(){
         $projects = $this->modelDb->getAllProjects();
         $datas = $this->modelDb->deleteTask($_SESSION['projectId']);
+        $undeleteCn = $this->modelDb->count($_SESSION['projectId']);
+        $deleCnt = $this->modelDb->deletedCount($_SESSION['projectId']);
         require 'view/initialPage.php';
     }
     public function delete($id){
         $count = $this->modelDb->delete($id,$_SESSION['projectId']);
+        header('location: /');
     }
 }

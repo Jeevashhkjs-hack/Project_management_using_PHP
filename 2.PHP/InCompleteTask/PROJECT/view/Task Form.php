@@ -15,7 +15,7 @@
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="taskDes"></textarea>
             </div>
             <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02" name="userImg">
+                <input type="file" class="form-control" id="inputGroupFile02" multiple="multiple" name="userImg[]">
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
             <button type="submit" class="btn btn-secondary">Add Task</button>

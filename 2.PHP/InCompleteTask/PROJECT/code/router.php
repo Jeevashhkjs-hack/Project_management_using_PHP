@@ -55,7 +55,7 @@ class router{
                 if($key['action']){
                     switch ($key['action']){
                         case 'createProject':
-                            $this->controller->insertProject($_POST);
+                            $this->controller->insertProject($_POST,$_FILES['proImg']);
                             break;
                         case 'getTasks':
                             $this->controller->getAllTasks($_POST['tarId']);
