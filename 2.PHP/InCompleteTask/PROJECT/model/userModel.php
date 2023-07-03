@@ -4,13 +4,17 @@ class connection{
     public $dbConnect;
     public function __construct()
     {
-        $this->dbConnect = new PDO('mysql:host=localhost;dbname=project_management','root','welcome');
+        $this->dbConnect = new PDO('mysql:host=localhost;dbname=project_management','root','jeeva143');
     }
 }
 
 class userModel extends connection {
     public function insertProject($getProject){
         $this->dbConnect->query("INSERT INTO projects (project_name) VALUES ('$getProject')");
+        $ids = $this->dbConnect->query("SELECT id from projects order by id desc limit 1");
+        $count = $ids->fetch(PDO::FETCH_NUM);
+        return $count[0];
+
     }
     public function getAllProjects(){
         $pro = $this->dbConnect->query("select * from projects");
@@ -48,7 +52,8 @@ class userModel extends connection {
         return $deleteCount->fetch(PDO::FETCH_NUM);
     }
 
-    public function insertProImg($imgs){
+    public function insertProImg($imgs,$id){
+        $this->dbConnect->query("INSERT INTO images (images_path,module_name,module_id) VALUES ('$imgs','project',19)");
 
     }
 }

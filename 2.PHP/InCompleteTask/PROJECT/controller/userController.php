@@ -11,7 +11,8 @@ class userController{
 
     public function insertProject($getProData,$img){
         if($getProData){
-            $this->modelDb->insertProject($getProData['projectName']);
+            $lastProId = $this->modelDb->insertProject($getProData['projectName']);
+
                 $count = count($img['name']);
                 $path = 'view/UserImages/';
 
@@ -19,12 +20,12 @@ class userController{
                     $destinatin = $path.$img['name'][$i];
                     $tmpFle = $img['tmp_name'][$i];
                     move_uploaded_file($tmpFle,$destinatin);
-                    $this->modelDb->insertProImg($destinatin);
+                    $this->modelDb->insertProImg($destinatin,$lastProId);
                 }
 
             unset($_SESSION['projectPage']);
             $projects = $this->modelDb->getAllProjects();
-            header('location: /');
+            // header('location: /');
         }else{
             $_SESSION['projectPage'] = 'open';
         }
