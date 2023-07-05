@@ -19,7 +19,7 @@ class userController{
                     $destinatin = $path.$img['name'][$i];
                     $tmpFle = $img['tmp_name'][$i];
                     move_uploaded_file($tmpFle,$destinatin);
-                    $this->modelDb->insertProImg($destinatin,$lastProId,"projects");
+                    $this->modelDb->insertProImg($destinatin,$lastProId,1);
                 }
 
             unset($_SESSION['projectPage']);
@@ -63,7 +63,7 @@ class userController{
                 $destinatin = $path.$img['name'][$i];
                 $tmpFle = $img['tmp_name'][$i];
                 move_uploaded_file($tmpFle,$destinatin);
-                $this->modelDb->insertProImg($destinatin,$ids,"tasks");
+                $this->modelDb->insertProImg($destinatin,$ids,2);
             }
             header('location:/');
         }

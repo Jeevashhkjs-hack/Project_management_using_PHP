@@ -4,7 +4,7 @@ class connection{
     public $dbConnect;
     public function __construct()
     {
-        $this->dbConnect = new PDO('mysql:host=localhost;dbname=project_management','root','jeeva143');
+        $this->dbConnect = new PDO('mysql:host=localhost;dbname=projectNewManagement','root','jeeva143');
     }
 }
 
@@ -27,7 +27,7 @@ class userModel extends connection {
     public function taskView($id){
         $output = [];
         $data = $this->dbConnect->query("SELECT * FROM tasks WHERE id = '$id'")->fetchAll(PDO::FETCH_OBJ);
-        $images = $this->dbConnect->query("SELECT img_path FROM images WHERE model_no = '$id' and model_name = 'tasks'")->fetchAll(PDO::FETCH_OBJ);
+        $images = $this->dbConnect->query("SELECT img_path FROM images WHERE model_no = '$id' and model_name = 2")->fetchAll(PDO::FETCH_OBJ);
         array_push($output,$data,$images);
         return $output;
     }
