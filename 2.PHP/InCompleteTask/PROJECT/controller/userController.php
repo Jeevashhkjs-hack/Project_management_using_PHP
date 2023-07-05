@@ -12,7 +12,6 @@ class userController{
     public function insertProject($getProData,$img){
         if($getProData){
             $lastProId = $this->modelDb->insertProject($getProData['projectName']);
-
                 $count = count($img['name']);
                 $path = 'view/UserImages/';
 
@@ -20,12 +19,12 @@ class userController{
                     $destinatin = $path.$img['name'][$i];
                     $tmpFle = $img['tmp_name'][$i];
                     move_uploaded_file($tmpFle,$destinatin);
-                    $this->modelDb->insertProImg($destinatin,$lastProId);
+                    $this->modelDb->insertProImg($destinatin,$lastProId,"projects");
                 }
 
             unset($_SESSION['projectPage']);
             $projects = $this->modelDb->getAllProjects();
-            // header('location: /');
+            header('location: /');
         }else{
             $_SESSION['projectPage'] = 'open';
         }
@@ -47,6 +46,8 @@ class userController{
     }
     public function taskView($id){
         $data = $this->modelDb->taskView($id);
+        $datum = $data[0];
+        $imgs = $data[1];
         require 'view/taskView.php';
     }
     public function insertTask($data,$img){
@@ -54,6 +55,7 @@ class userController{
             $taskName = $data['taskName'];
             $taskDes = $data['taskDes'];
 
+           $ids = $this->modelDb->insertTask($taskName,$taskDes,$_SESSION['projectId']);
             $cnt = count($img['name']);
             $path = 'view/UserImages/';
 
@@ -61,7 +63,7 @@ class userController{
                 $destinatin = $path.$img['name'][$i];
                 $tmpFle = $img['tmp_name'][$i];
                 move_uploaded_file($tmpFle,$destinatin);
-                $this->modelDb->insertTask($taskName,$taskDes,$destinatin,$_SESSION['projectId']);
+                $this->modelDb->insertProImg($destinatin,$ids,"tasks");
             }
             header('location:/');
         }

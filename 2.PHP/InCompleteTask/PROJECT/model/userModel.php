@@ -25,11 +25,16 @@ class userModel extends connection {
         return $data->fetchAll(PDO::FETCH_OBJ);
     }
     public function taskView($id){
-        $data = $this->dbConnect->query("SELECT * FROM tasks WHERE id = '$id'");
-        return $data->fetchAll(PDO::FETCH_OBJ);
+        $output = [];
+        $data = $this->dbConnect->query("SELECT * FROM tasks WHERE id = '$id'")->fetchAll(PDO::FETCH_OBJ);
+        $images = $this->dbConnect->query("SELECT img_path FROM images WHERE model_no = '$id' and model_name = 'tasks'")->fetchAll(PDO::FETCH_OBJ);
+        array_push($output,$data,$images);
+        return $output;
     }
-    public function insertTask($nam,$des,$img,$id){
-        $this->dbConnect->query("INSERT INTO tasks (task_name,task_description,task_image,project_id) VALUES ('$nam','$des','$img','$id')");
+    public function insertTask($nam,$des,$id){
+        $this->dbConnect->query("INSERT INTO tasks (task_name,task_description,project_id) VALUES ('$nam','$des','$id')");
+        $dataNu = $this->dbConnect->query("SELECT id FROM tasks order by id desc limit 1")->fetch(PDO::FETCH_NUM);
+        return $dataNu[0];
     }
     public function undeleted($id){
         $undeletedTasks = $this->dbConnect->query("SELECT * FROM tasks WHERE project_id = '$id' AND delete_at IS NULL");
@@ -52,8 +57,7 @@ class userModel extends connection {
         return $deleteCount->fetch(PDO::FETCH_NUM);
     }
 
-    public function insertProImg($imgs,$id){
-        $this->dbConnect->query("INSERT INTO images (images_path,module_name,module_id) VALUES ('$imgs','project',19)");
-
+    public function insertProImg($imgs,$id,$type){
+        $this->dbConnect->query("INSERT INTO images (img_path,model_name,model_no,created_at,updated_at) VALUES ('$imgs','$type',$id,now(),now())");
     }
 }
